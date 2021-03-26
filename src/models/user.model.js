@@ -39,10 +39,12 @@ const userSchema = new mongoose.Schema(
   {
     toJSON: {
       virtuals: true,
-      transform: function toJSON(doc, ret) {
-        delete ret._id;
-        delete ret.password;
-        delete ret.__v;
+      transform(doc, ret) {
+        Object.assign(ret, {
+          _id: undefined,
+          __v: undefined,
+          password: undefined,
+        });
       },
     },
   }
