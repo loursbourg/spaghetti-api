@@ -1,6 +1,5 @@
 const httpStatus = require('http-status');
 const bcrypt = require('bcryptjs');
-const {omit} = require('lodash');
 const User = require('../../models/user.model');
 const authService = require('../../services/auth.service');
 const {Role} = require('../../config/roles');
@@ -27,7 +26,7 @@ const register = async (req, res) => {
 
   const accessToken = await authService.generateJwt(user);
   return res.status(httpStatus.OK).json({
-    user: omit(user.toJSON(), ['password', '__v']),
+    user,
     access_token: accessToken,
   });
 };
