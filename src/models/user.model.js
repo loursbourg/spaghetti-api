@@ -50,16 +50,15 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-const User = mongoose.model('User', userSchema);
-
-userSchema.methods.matchOldPassword = async password => {
-  const user = this;
-  const matched = await bcrypt.compare(password, user.password);
+userSchema.methods.matchOldPassword = async function (password) {
+  const matched = await bcrypt.compare(password, this.password);
   return matched;
 };
 
 userSchema.virtual('full_name').get(function getFullNameAttribute() {
   return `${this.first_name} ${this.last_name}`;
 });
+
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;
