@@ -25,7 +25,7 @@ const attempt = async (email, password) => {
  */
 const generateJwt = user => {
   const payload = {
-    id: user.id,
+    id: user._id,
     role: user.role,
   };
   return new Promise((resolve, reject) => {
@@ -33,7 +33,7 @@ const generateJwt = user => {
       payload,
       application.jwt.secret,
       {
-        expiresIn: application.jwt.accessTokenExpirationMinutes,
+        expiresIn: application.jwt.accessTokenExpirationMinutes * 60,
       },
       (error, token) => {
         if (error) {

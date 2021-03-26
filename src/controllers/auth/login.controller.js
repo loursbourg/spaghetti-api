@@ -9,7 +9,7 @@ const login = async (req, res) => {
 
     res.status(httpStatus.OK).json({
       user,
-      accessToken,
+      access_token: accessToken,
     });
   } else {
     res.status(httpStatus.UNAUTHORIZED).json({
