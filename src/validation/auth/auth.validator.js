@@ -12,7 +12,12 @@ const registerRequest = Joi.object({
   password: Joi.string().required().min(1).max(512),
 });
 
+const forgotPasswordRequest = Joi.object({
+  email: Joi.string().required().min(1).max(512).email(),
+});
+
 module.exports = {
   loginRequest,
   registerRequest,
+  forgotPasswordRequest,
 };
