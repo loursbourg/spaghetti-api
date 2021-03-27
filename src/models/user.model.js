@@ -50,15 +50,26 @@ const userSchema = new mongoose.Schema(
   }
 );
 
+/**
+ * Returns whether the password matches the user's current password
+ *
+ * @this User
+ */
 userSchema.methods.matchOldPassword = async function (password) {
   const matched = await bcrypt.compare(password, this.password);
   return matched;
 };
 
-userSchema.virtual('full_name').get(function getFullNameAttribute() {
+userSchema.virtual('full_name').get(function () {
   return `${this.first_name} ${this.last_name}`;
 });
 
+/**
+ * User model
+ *
+ * @typedef User
+ * @property {string} password
+ */
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
