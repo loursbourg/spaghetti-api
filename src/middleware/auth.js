@@ -1,12 +1,11 @@
 const httpStatus = require('http-status');
 const passport = require('passport');
+const ApiError = require('../utils/ApiError');
 
 const auth = (req, res, next) =>
   passport.authenticate('jwt', {session: false}, (error, user, info) => {
     if (error || info) {
-      res.status(httpStatus.UNAUTHORIZED).json({
-        message: 'Unauthenticated',
-      });
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Unauthenticated');
     } else {
       req.user = user;
       next();
