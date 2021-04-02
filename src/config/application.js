@@ -12,14 +12,15 @@ module.exports = {
   },
   jwt: {
     secret: env.JWT_SECRET,
-    accessTokenExpirationMinutes: env.JWT_ACCESS_EXPIRATION_MINUTES,
-    refreshTokenExpirationDays: env.JWT_REFRESH_EXPIRATION_DAYS,
+    accessTokenExpirationMinutes: Number(env.JWT_ACCESS_EXPIRATION_MINUTES),
+    refreshTokenExpirationDays: Number(env.JWT_REFRESH_EXPIRATION_DAYS),
   },
   email: {
     smtpHost: env.SMTP_HOST,
-    smtpPort: env.SMTP_PORT,
+    smtpPort: Number(env.SMTP_PORT),
     smtpUsername: env.SMTP_USERNAME,
     smtpPassword: env.SMTP_PASSWORD,
     from: env.EMAIL_FROM,
+    useTLS: Boolean(env.EMAIL_USE_TLS),
   },
 };
