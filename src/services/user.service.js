@@ -41,7 +41,18 @@ const updateUserPasswordById = async (userId, newPassword) => {
   return true;
 };
 
+/**
+ *
+ * @param {String} email
+ * @returns {Promise<any>} User
+ */
+const findByEmail = async email => {
+  const user = await User.findOne({email});
+  return user || null;
+};
+
 module.exports = {
+  findByEmail,
   createUser,
   updateUserPasswordById,
 };

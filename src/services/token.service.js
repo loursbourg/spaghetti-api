@@ -1,9 +1,12 @@
 const JWT = require('jsonwebtoken');
 const {addMinutes, addDays} = require('date-fns');
 const {isPast} = require('date-fns');
+const httpStatus = require('http-status');
 const application = require('../config/application');
 const {Token, TokenType} = require('../models/token.model');
 const cryptoService = require('./crypto.service');
+const userService = require('./user.service');
+const ApiError = require('../utils/ApiError');
 
 /**
  * Generate a JWT for a given user
@@ -92,7 +95,17 @@ const verifyPasswordResetToken = async (userId, passwordResetCode) => {
   return token;
 };
 
+const generatePasswordResetToken = async email => {
+  const user = await userService.findByEmail(email);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  const resetToken = await cryptoService.generateHash();
+  return resetToken;
+};
+
 module.exports = {
+  generatePasswordResetToken,
   saveToken,
   generateToken,
   generateAuthTokens,
