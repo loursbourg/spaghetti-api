@@ -19,18 +19,18 @@ const sendEmail = async (to, subject, text) => {
 /**
  * Send reset password email
  *
- * @param {string} name the name of the user
+ * @param {object} user the user
  * @param {string} code the code
- * @param {string} to the email address to which the code will be sent
  * @returns {Promise}
  */
-const sendPasswordResetCode = async (name, code, to) => {
+const sendPasswordResetCode = async (user, code) => {
+  const {full_name, email} = user;
   const subject = 'Password Reset';
-  const text = `Hi ${name},
+  const text = `Hi ${full_name},
   Use this code to reset your password:
   ${code}
   `;
-  await sendEmail(to, subject, text);
+  await sendEmail(email, subject, text);
 };
 
 module.exports = {

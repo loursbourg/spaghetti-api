@@ -82,17 +82,18 @@ const generateAuthTokens = async user => {
   };
 };
 
-const verifyPasswordResetToken = async (userId, passwordResetCode) => {
-  const hashedResetCode = cryptoService.computeHash(passwordResetCode);
-  const token = await Token.findOne({user: userId, body: hashedResetCode});
+const verifyPasswordResetToken = async passwordResetCode => {
+  const token = await Token.findOne({body: passwordResetCode}).populate('user');
   if (!token) {
-    throw new Error('Invalid password reset token');
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid password reset token');
   }
   const hasExpired = isPast(token.expiresAt);
   if (hasExpired) {
-    throw new Error('Invalid or expired password reset token');
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid or expired password reset token');
   }
-  return token;
+  return {
+    token,
+  };
 };
 
 const generatePasswordResetToken = async email => {
@@ -101,7 +102,16 @@ const generatePasswordResetToken = async email => {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
   const resetToken = await cryptoService.generateHash();
-  return resetToken;
+  await new Token({
+    type: TokenType.PASSWORD_RESET,
+    body: resetToken,
+    user: user._id,
+    expiresAt: addMinutes(new Date(), 10),
+  }).save();
+  return {
+    user,
+    resetToken,
+  };
 };
 
 module.exports = {

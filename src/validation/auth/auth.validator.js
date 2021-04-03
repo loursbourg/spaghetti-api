@@ -17,7 +17,7 @@ const forgotPasswordRequest = Joi.object({
 });
 
 const resetPasswordRequest = Joi.object({
-  password_reset_code: Joi.string().required().min(1).max(512),
+  code: Joi.string().required().min(1).max(512),
   password: Joi.string().required().min(1).max(512),
   password_confirmation: Joi.any()
     .equal(Joi.ref('password'))
