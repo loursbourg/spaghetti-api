@@ -3,12 +3,13 @@ const path = require('path');
 
 dotenv.config({path: path.join(__dirname, '../../.env')});
 const {env} = process;
+const testDb = `${env.MONGODB_URL}-test`;
 
 module.exports = {
   env: env.NODE_ENV,
   port: env.PORT,
   database: {
-    url: env.MONGODB_URL,
+    url: env.NODE_ENV === 'test' ? testDb : env.MONGODB_URL,
   },
   jwt: {
     secret: env.JWT_SECRET,
