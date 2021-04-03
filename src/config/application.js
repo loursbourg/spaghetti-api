@@ -22,6 +22,6 @@ module.exports = {
     smtpUsername: env.SMTP_USERNAME,
     smtpPassword: env.SMTP_PASSWORD,
     from: env.EMAIL_FROM,
-    useTLS: Boolean(env.EMAIL_USE_TLS),
+    useTLS: env.EMAIL_USE_TLS === 'true',
   },
 };
