@@ -28,4 +28,9 @@ process.on('uncaughtException', exception => {
   logger.error(exception);
 });
 
+process.on('unhandledRejection', exception => {
+  logger.error(exception);
+  process.exit();
+});
+
 module.exports = logger;
