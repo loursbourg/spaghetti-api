@@ -11,7 +11,7 @@ const jwtStrategy = new JwtStrategy(
   },
   async (jwtPayload, done) => {
     try {
-      const user = await User.findOne({_id: jwtPayload.id});
+      const user = await User.findOne({_id: jwtPayload.sub});
       if (user) {
         return done(null, user);
       }
